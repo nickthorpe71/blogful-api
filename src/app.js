@@ -17,7 +17,7 @@ app.use(helmet());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
+  res.send('Hello world!');
 });
 
 // eslint-disable-next-line no-unused-vars
