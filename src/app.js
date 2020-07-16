@@ -16,6 +16,10 @@ app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
 
+app.get('/articles', (req, res, next) => {
+  res.send('All articles');
+});
+
 app.get('/', (req, res) => {
   res.send('Hello world!');
 });
