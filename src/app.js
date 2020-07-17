@@ -5,7 +5,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
-const ArticlesService = require('./articles-service');
+const ArticlesService = require('./articles/articles-service');
+const jsonParser = express.json();
 
 const app = express();
 
@@ -40,8 +41,20 @@ app.get('/articles/:article_id', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello world!');
+app.post('/articles', jsonParser, (req, res, next) => {
+  const { title, content, style } = req.body;
+  const newArticle = { title, content, style };
+  ArticlesService.insertArticle(
+    req.app.get('db'),
+    newArticle
+  )
+    .then(article => {
+      res
+        .status(201)
+        .location(`/articles/${article.id}`)
+        .json(article);
+    })
+    .catch(next);
 });
 
 // eslint-disable-next-line no-unused-vars
